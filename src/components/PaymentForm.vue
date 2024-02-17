@@ -33,7 +33,9 @@
         />
       </div>
 
-      <button @click="savePayment()">Save payment</button>
+      <button :class="[$style.buttonSave]" @click="savePayment()">
+        Save payment
+      </button>
     </div>
   </div>
 </template>
@@ -52,6 +54,7 @@ export default {
     savePayment() {
       const { date, category, price } = this;
       this.$emit("addPayment", { date, category, price });
+      this.$emit("hidePaymentForm");
       this.date = "";
       this.category = "";
       this.price = 0;
@@ -105,5 +108,19 @@ export default {
   flex-wrap: nowrap;
   align-items: center;
   column-gap: 15px;
+}
+
+.buttonSave {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.85rem;
+  padding: 5px 15px;
+  background-color: coral;
+  border: none;
+  border-radius: 5px;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+  cursor: pointer;
 }
 </style>

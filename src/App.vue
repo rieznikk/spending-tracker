@@ -2,7 +2,9 @@
   <div id="app">
     <header :class="[$style.header]">My personal costs</header>
     <main>
-      <button @click="paymentFormHandle()">ADD NEW COST +</button>
+      <button :class="[$style.ctaMain]" @click="paymentFormHandle()">
+        ADD NEW COST +
+      </button>
 
       <PaymentForm
         v-show="paymentFormVisibility"
@@ -27,23 +29,7 @@ export default {
   data() {
     return {
       paymentFormVisibility: false,
-      paymentsList: [
-        {
-          date: "17.02.2024",
-          category: "Education",
-          price: 5000,
-        },
-        {
-          date: "17.02.2023",
-          category: "Education",
-          price: 5000,
-        },
-        {
-          date: "17.02.2022",
-          category: "Education",
-          price: 5000,
-        },
-      ],
+      paymentsList: [],
     };
   },
   methods: {
@@ -59,6 +45,24 @@ export default {
 
 <style lang="scss" module>
 .header {
-  color: red;
+  width: 50%;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.5rem;
+  margin-bottom: 5px;
+}
+
+.ctaMain {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.85rem;
+  padding: 5px 15px;
+  background-color: coral;
+  border: none;
+  border-radius: 5px;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+  cursor: pointer;
 }
 </style>
