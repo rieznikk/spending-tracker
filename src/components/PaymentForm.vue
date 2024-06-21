@@ -41,6 +41,8 @@
 </template>
 
 <script>
+// import { mapMutations, mapGetters } from "vuex";
+
 export default {
   data() {
     return {
@@ -50,6 +52,7 @@ export default {
     };
   },
   props: {},
+  computed: {},
   methods: {
     savePayment() {
       const { date, category, price } = this;
@@ -63,6 +66,7 @@ export default {
       this.$emit("hidePaymentForm");
     },
   },
+  mounted() {},
 };
 </script>
 

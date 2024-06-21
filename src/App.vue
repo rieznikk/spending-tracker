@@ -12,7 +12,7 @@
         @hidePaymentForm="paymentFormHandle"
       />
 
-      <PaymentsList :items="paymentsList" />
+      <PaymentsList />
     </main>
   </div>
 </template>
@@ -20,6 +20,9 @@
 <script>
 import PaymentForm from "./components/PaymentForm.vue";
 import PaymentsList from "./components/PaymentsList.vue";
+
+import { mapActions } from "vuex";
+
 export default {
   name: "App",
   components: {
@@ -29,16 +32,19 @@ export default {
   data() {
     return {
       paymentFormVisibility: false,
-      paymentsList: [],
     };
   },
   methods: {
+    ...mapActions(["fetchData"]),
     paymentFormHandle() {
       this.paymentFormVisibility = !this.paymentFormVisibility;
     },
     onPaymentAdded(payment) {
       this.paymentsList.push(payment);
     },
+  },
+  mounted() {
+    this.fetchData();
   },
 };
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <table :class="[$style.tableWrapper]" v-show="items.length !== 0">
+  <table :class="[$style.tableWrapper]" v-show="getPaymentsList.length !== 0">
     <thead>
       <tr>
         <th :class="[$style.tableCell]">#</th>
@@ -11,7 +11,7 @@
     <tbody>
       <tr
         :class="[$style.tableRow]"
-        v-for="(item, index) in items"
+        v-for="(item, index) in getPaymentsList"
         :key="index"
       >
         <td :class="[$style.tableCell]">{{ index + 1 }}</td>
@@ -24,15 +24,13 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
-  props: {
-    items: {
-      type: Array,
-      default: () => [],
-    },
-  },
   methods: {},
-  mounted() {},
+  computed: {
+    ...mapGetters(["getPaymentsList"]),
+  },
 };
 </script>
 
