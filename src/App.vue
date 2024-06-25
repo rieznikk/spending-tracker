@@ -2,16 +2,9 @@
   <div id="app">
     <header :class="[$style.header]">My personal costs</header>
     <main>
-      <button :class="[$style.ctaMain]" @click="paymentFormHandle()">
-        ADD NEW COST +
-      </button>
+      <button :class="[$style.ctaMain]" @click="paymentFormHandle()">ADD NEW COST +</button>
 
-      <PaymentForm
-        v-show="paymentFormVisibility"
-        @addPayment="onPaymentAdded"
-        @hidePaymentForm="paymentFormHandle"
-      />
-
+      <PaymentForm v-show="paymentFormVisibility" @hidePaymentForm="paymentFormHandle"/>
       <PaymentsList />
     </main>
   </div>
@@ -38,10 +31,7 @@ export default {
     ...mapActions(["fetchData"]),
     paymentFormHandle() {
       this.paymentFormVisibility = !this.paymentFormVisibility;
-    },
-    onPaymentAdded(payment) {
-      this.paymentsList.push(payment);
-    },
+    }
   },
   mounted() {
     this.fetchData();

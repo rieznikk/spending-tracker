@@ -41,7 +41,7 @@
 </template>
 
 <script>
-// import { mapMutations, mapGetters } from "vuex";
+import { mapMutations, mapGetters } from 'vuex';
 
 export default {
   data() {
@@ -52,11 +52,22 @@ export default {
     };
   },
   props: {},
-  computed: {},
+  computed: {
+    ...mapGetters(['getPaymentsList']),
+  },
   methods: {
+    ...mapMutations(['setPaymentsListData']),
     savePayment() {
       const { date, category, price } = this;
-      this.$emit("addPayment", { date, category, price });
+      const currentPaymentList = this.getPaymentsList;
+      const newPaymentData = {
+        date: date,
+        category: category,
+        price: price
+      };
+
+      currentPaymentList.push(newPaymentData);
+      this.setPaymentsListData(currentPaymentList);
       this.$emit("hidePaymentForm");
       this.date = "";
       this.category = "";
