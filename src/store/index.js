@@ -6,6 +6,13 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     paymentsList: [],
+    availableCategory: [
+      '🏠 Rent/Mortgage', '💡 Utilities', '🛒 Groceries', '🚗 Transportation',
+      '🛡️ Insurance', '🏥 Healthcare', '🎬 Entertainment', '🍽️ Dining Out',
+      '👗 Clothing', '📚 Education', '💰 Savings', '📈 Investments',
+      '✈️ Travel', '💅 Personal Care', '🧹 Household Supplies', '📦 Subscriptions',
+      '🎁 Gifts/Donations', '👶 Childcare', '🐾 Pet Care', '💳 Debt Repayment'
+    ]
   },
   mutations: {
     setPaymentsListData(state, payload) {
@@ -17,6 +24,7 @@ export default new Vuex.Store({
     getPaymentsListTotalPrice: (state) => {
       return state.paymentsList.reduce((res, cur) => res + cur.price, 0);
     },
+    getAvailableCategories: (state) => state.availableCategory
   },
   actions: {
     async fetchData({ commit }) {

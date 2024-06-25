@@ -5,37 +5,23 @@
 
       <div :class="[$style.dateField]">
         <span :class="[$style.dateHeading]">Date</span>
-        <input
-          :class="[$style.dateInput]"
-          placeholder="Date"
-          type="text"
-          v-model="date"
-        />
+        <input :class="[$style.input]" placeholder="Date" type="text" v-model="date"/>
       </div>
 
       <div :class="[$style.categoryField]">
         <span :class="[$style.categoryHeading]">Category</span>
-        <input
-          :class="[$style.categoryInput]"
-          placeholder="Category"
-          type="text"
-          v-model="category"
-        />
+
+        <select v-model="category" :class="[$style.input]">
+          <option v-for="(option, index) in getAvailableCategories" :value="option" :key="index">{{ option }}</option>
+        </select>
       </div>
 
       <div :class="[$style.priceField]">
         <span :class="[$style.priceHeading]">Your spending</span>
-        <input
-          :class="[$style.priceInput]"
-          placeholder="Price"
-          type="number"
-          v-model.number="price"
-        />
+        <input :class="[$style.input]" placeholder="Price" type="number" v-model.number="price"/>
       </div>
 
-      <button :class="[$style.buttonSave]" @click="savePayment()">
-        Save payment
-      </button>
+      <button :class="[$style.buttonSave]" @click="savePayment()">Save payment</button>
     </div>
   </div>
 </template>
@@ -53,7 +39,7 @@ export default {
   },
   props: {},
   computed: {
-    ...mapGetters(['getPaymentsList']),
+    ...mapGetters(['getPaymentsList', 'getAvailableCategories']),
   },
   methods: {
     ...mapMutations(['setPaymentsListData']),
@@ -70,14 +56,16 @@ export default {
       this.setPaymentsListData(currentPaymentList);
       this.$emit("hidePaymentForm");
       this.date = "";
-      this.category = "";
+      this.category = this.getAvailableCategories[0];
       this.price = 0;
     },
     hideForm() {
       this.$emit("hidePaymentForm");
     },
   },
-  mounted() {},
+  mounted() {
+    this.category = this.getAvailableCategories[0]
+  },
 };
 </script>
 
@@ -123,6 +111,14 @@ export default {
   flex-wrap: nowrap;
   align-items: center;
   column-gap: 15px;
+}
+
+.input {
+  width: 200px;
+  max-width: 200px;
+  min-width: 200px;
+  box-sizing: border-box;
+  padding-block: 1px;
 }
 
 .buttonSave {
