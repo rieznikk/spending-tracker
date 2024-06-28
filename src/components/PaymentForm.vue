@@ -34,7 +34,7 @@ export default {
     return {
       date: "",
       category: "",
-      price: 0,
+      price: 0
     };
   },
   props: {},
@@ -46,10 +46,13 @@ export default {
     savePayment() {
       const { date, category, price } = this;
       const currentPaymentList = this.getPaymentsList;
+      const index = currentPaymentList[currentPaymentList.length - 1].index + 1;
+      
       const newPaymentData = {
         date: date,
         category: category,
-        price: price
+        price: price,
+        index: index
       };
 
       currentPaymentList.push(newPaymentData);
@@ -64,7 +67,7 @@ export default {
     },
   },
   mounted() {
-    this.category = this.getAvailableCategories[0]
+    this.category = this.getAvailableCategories[0];
   },
 };
 </script>
