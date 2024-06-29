@@ -7,11 +7,10 @@ export default new Vuex.Store({
   state: {
     paymentsList: [],
     availableCategory: [
-      '🏠 Rent/Mortgage', '💡 Utilities', '🛒 Groceries', '🚗 Transportation',
-      '🛡️ Insurance', '🏥 Healthcare', '🎬 Entertainment', '🍽️ Dining Out',
-      '👗 Clothing', '📚 Education', '💰 Savings', '📈 Investments',
-      '✈️ Travel', '💅 Personal Care', '🧹 Household Supplies', '📦 Subscriptions',
-      '🎁 Gifts/Donations', '👶 Childcare', '🐾 Pet Care', '💳 Debt Repayment'
+      '🏠 Rent/Mortgage', '💡 Utilities', '🛒 Groceries', '🚗 Transportation','🛡️ Insurance',
+      '🏥 Healthcare', '🎬 Entertainment', '🍽️ Dining Out','👗 Clothing', '📚 Education',
+      '💰 Savings', '📈 Investments','✈️ Travel', '💅 Personal Care', '🧹 Household Supplies',
+      '📦 Subscriptions', '🎁 Gifts/Donations', '👶 Childcare', '🐾 Pet Care', '💳 Debt Repayment'
     ]
   },
   mutations: {
@@ -41,7 +40,7 @@ export default new Vuex.Store({
             { date: "07.06.2024", category: "🎬 Entertainment", price: 100, index: 7 },
             { date: "08.06.2024", category: "🍽️ Dining Out", price: 1500, index: 8 },
             { date: "09.06.2024", category: "👗 Clothing", price: 40000, index: 9 },
-            { date: "20.06.2024", category: "📚 Education", price: 54000, index: 10 }
+            { date: "10.06.2024", category: "📚 Education", price: 54000, index: 10 }
           ]);
         }, 1000);
       });

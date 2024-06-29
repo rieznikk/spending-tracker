@@ -1,40 +1,49 @@
 <template>
   <div id="app">
-    <header :class="[$style.header]">My personal costs</header>
+    <header :class="[$style.header]">
+      <div>My personal costs</div>
+      <div>
+        <span><a href="#dashboard">Dashboard</a></span>
+        <span><a href="#about">About</a></span>
+        <span><a href="#404">404</a></span>
+      </div>
+    </header>
     <main>
-      <button :class="[$style.ctaMain]" @click="paymentFormHandle()">ADD NEW COST +</button>
-
-      <PaymentForm v-show="paymentFormVisibility" @hidePaymentForm="paymentFormHandle"/>
-      <PaymentsList />
+      <PageDashboard v-if="page === 'dashboard'"></PageDashboard>
+      <PageAbout v-else-if="page === 'about'"></PageAbout>
+      <Page404 v-else></Page404>
     </main>
   </div>
 </template>
 
 <script>
-import PaymentForm from "./components/PaymentForm.vue";
-import PaymentsList from "./components/PaymentsList.vue";
-
-import { mapActions } from "vuex";
+import PageDashboard from './page/PageDashboard';
+import PageAbout from './page/PageAbout';
+import Page404 from './page/PageNotFound';
 
 export default {
   name: "App",
   components: {
-    PaymentsList,
-    PaymentForm,
+    PageDashboard,
+    PageAbout,
+    Page404
   },
   data() {
     return {
-      paymentFormVisibility: false,
+      page: 'dashboard'
     };
   },
   methods: {
-    ...mapActions(["fetchData"]),
-    paymentFormHandle() {
-      this.paymentFormVisibility = !this.paymentFormVisibility;
+    setPage() {
+      this.page = location.hash.slice(1); 
     }
   },
   mounted() {
-    this.fetchData();
+    this.setPage();
+
+    window.addEventListener('hashchange', () => {
+      this.setPage();
+    });
   },
 };
 </script>
@@ -46,19 +55,5 @@ export default {
   font-weight: bold;
   font-size: 1.5rem;
   margin-bottom: 5px;
-}
-
-.ctaMain {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 0.85rem;
-  padding: 5px 15px;
-  background-color: coral;
-  border: none;
-  border-radius: 5px;
-  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
-    rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
-  cursor: pointer;
 }
 </style>

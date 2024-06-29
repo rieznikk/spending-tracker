@@ -39,20 +39,19 @@ export default {
   },
   props: {},
   computed: {
-    ...mapGetters(['getPaymentsList', 'getAvailableCategories']),
+    ...mapGetters(['getPaymentsList', 'getAvailableCategories', 'getLengthOfPaymentList']),
   },
   methods: {
     ...mapMutations(['setPaymentsListData']),
     savePayment() {
       const { date, category, price } = this;
       const currentPaymentList = this.getPaymentsList;
-      const index = currentPaymentList[currentPaymentList.length - 1].index + 1;
       
       const newPaymentData = {
         date: date,
         category: category,
         price: price,
-        index: index
+        index: this.getLengthOfPaymentList + 1
       };
 
       currentPaymentList.push(newPaymentData);
