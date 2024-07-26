@@ -3,48 +3,23 @@
     <header :class="[$style.header]">
       <div>My personal costs</div>
       <div>
-        <span><a href="#dashboard">Dashboard</a></span>
-        <span><a href="#about">About</a></span>
-        <span><a href="#404">404</a></span>
+        <router-link to="/dashboard/1">Dashboard</router-link>
+        <router-link to="/about">About</router-link>
+        <router-link to="/404">404</router-link>
       </div>
     </header>
     <main>
-      <PageDashboard v-if="page === 'dashboard'"></PageDashboard>
-      <PageAbout v-else-if="page === 'about'"></PageAbout>
-      <Page404 v-else></Page404>
+      <router-view></router-view>
     </main>
   </div>
 </template>
 
 <script>
-import PageDashboard from './page/PageDashboard';
-import PageAbout from './page/PageAbout';
-import Page404 from './page/PageNotFound';
-
 export default {
   name: "App",
-  components: {
-    PageDashboard,
-    PageAbout,
-    Page404
-  },
-  data() {
-    return {
-      page: 'dashboard'
-    };
-  },
-  methods: {
-    setPage() {
-      this.page = location.hash.slice(1); 
-    }
-  },
   mounted() {
-    this.setPage();
-
-    window.addEventListener('hashchange', () => {
-      this.setPage();
-    });
-  },
+    // this.$router.push({ name: 'notFound' });
+  }
 };
 </script>
 

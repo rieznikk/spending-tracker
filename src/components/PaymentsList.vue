@@ -20,7 +20,7 @@
       </tbody>
     </table>
 
-    <ListPagination :itemsPerPage="itemsOnPage" :currentPage="page" @changePage="rerenderList"></ListPagination>
+    <ListPagination :itemsPerPage="itemsOnPage" :currentPage="currentPageNumber" @changePage="rerenderList"></ListPagination>
   </div>
 </template>
 
@@ -34,22 +34,30 @@ export default {
   },
   data() {
     return {
-      page: 1,
-      itemsOnPage: 10
+      itemsOnPage: 10,
+      currentPageNumber: 1
+    }
+  },
+  watch: {
+    '$route.params.page'(newPage) {
+      this.currentPageNumber = +newPage;
     }
   },
   methods: {
     rerenderList(page) {
-      this.page = page;
+      this.$router.push({ name: 'dashboard', params: { page } });
     }
   },
   computed: {
     ...mapGetters(["getPaymentsList"]),
     currentPage() {
-      const { itemsOnPage, page } = this;
-      return this.getPaymentsList.slice(itemsOnPage * (page - 1), itemsOnPage * (page - 1) + itemsOnPage);
+      const { itemsOnPage, currentPageNumber } = this;
+      return this.getPaymentsList.slice(itemsOnPage * (currentPageNumber - 1), itemsOnPage * (currentPageNumber - 1) + itemsOnPage);
     }
   },
+  mounted() {
+    this.currentPageNumber = +this.$route.params.page || 1;
+  }
 };
 </script>
 
