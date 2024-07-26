@@ -37,19 +37,22 @@ export default {
       price: 0
     };
   },
-  props: {},
+  props: {
+    categoryFromQuery: String,
+    spendingFromQuery: Number
+  },
   computed: {
     ...mapGetters(['getPaymentsList', 'getAvailableCategories', 'getLengthOfPaymentList']),
   },
   methods: {
     ...mapMutations(['setPaymentsListData']),
     savePayment() {
-      const { date, category, price } = this;
+      const { date, category, price, categoryFromQuery } = this;
       const currentPaymentList = this.getPaymentsList;
       
       const newPaymentData = {
         date: date,
-        category: category,
+        category: categoryFromQuery || category,
         price: price,
         index: this.getLengthOfPaymentList + 1
       };
@@ -57,17 +60,34 @@ export default {
       currentPaymentList.push(newPaymentData);
       this.setPaymentsListData(currentPaymentList);
       this.$emit("hidePaymentForm");
-      this.date = "";
+      this.$emit('clearProps');
       this.category = this.getAvailableCategories[0];
       this.price = 0;
     },
     hideForm() {
       this.$emit("hidePaymentForm");
     },
+    getDate() {
+      const date = new Date();
+      const padZero = (num) => num.toString().padStart(2, '0');
+
+      const day = padZero(date.getDate());
+      const month = padZero(date.getMonth() + 1);
+      const year = date.getFullYear().toString().slice(-2);
+
+      return `${day}.${month}.${year}`;
+    }
   },
   mounted() {
-    this.category = this.getAvailableCategories[0];
+    this.date = this.getDate();
+    this.category = this.categoryFromQuery || this.getAvailableCategories[0];
+    this.price = this.spendingFromQuery;
   },
+  beforeUpdate() {
+    this.date = this.getDate();
+    this.category = this.categoryFromQuery || this.getAvailableCategories[0];
+    this.price = this.spendingFromQuery;
+  }
 };
 </script>
 

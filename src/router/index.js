@@ -14,6 +14,10 @@ const router =  new Rooter({
       redirect: '/dashboard/1'
     },
     {
+      path: '/dashboard/add',
+      redirect: '/dashboard/1'
+    },
+    {
       path: '/dashboard/:page',
       name: 'dashboard',
       component: PageDashboard
