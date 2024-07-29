@@ -1,10 +1,6 @@
 import Vue from 'vue';
 import Rooter from 'vue-router';
 
-import PageDashboard from '../page/PageDashboard';
-import PageAbout from '../page/PageAbout';
-import Page404 from '../page/PageNotFound';
-
 Vue.use(Rooter);
 const router =  new Rooter({
   mode: 'history',
@@ -18,32 +14,26 @@ const router =  new Rooter({
       redirect: '/dashboard/1'
     },
     {
+      path: '/',
+      name: 'home',
+      component: () => import('../page/PageHome')
+    },
+    {
       path: '/dashboard/:page',
       name: 'dashboard',
-      component: PageDashboard
+      component: () => import('../page/PageDashboard')
     },
     {
       path: '/about',
       name: 'about',
-      component: PageAbout
+      component: () => import('../page/PageAbout')
     },
     {
       path: '*',
       name: 'notFound',
-      component: Page404
+      component: () => import('../page/PageNotFound')
     }
   ]
 });
-
-// router.beforeEach((to, from, next) => {
-//   console.log('🚔🚨next --->', next);
-//   console.log('🚔🚨from --->', from);
-//   console.log('🚔🚨to --->', to);
-//   // ?
-// });
-
-// router.afterEach(() => {
-//   // ?
-// });
 
 export default router;

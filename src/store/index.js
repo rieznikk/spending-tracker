@@ -11,20 +11,25 @@ export default new Vuex.Store({
       '🏥 Healthcare', '🎬 Entertainment', '🍽️ Dining Out','👗 Clothing', '📚 Education',
       '💰 Savings', '📈 Investments','✈️ Travel', '💅 Personal Care', '🧹 Household Supplies',
       '📦 Subscriptions', '🎁 Gifts/Donations', '👶 Childcare', '🐾 Pet Care', '💳 Debt Repayment'
-    ]
+    ],
+    urlQuery: {
+      category: null,
+      price: null
+    }
   },
   mutations: {
     setPaymentsListData(state, payload) {
       state.paymentsList = payload;
     },
+    setUrlQuery(state, payload) {
+      state.urlQuery = payload;
+    }
   },
   getters: {
     getPaymentsList: (state) => state.paymentsList,
-    getPaymentsListTotalPrice: (state) => {
-      return state.paymentsList.reduce((res, cur) => res + cur.price, 0);
-    },
     getLengthOfPaymentList: (state) => state.paymentsList.length,
-    getAvailableCategories: (state) => state.availableCategory
+    getAvailableCategories: (state) => state.availableCategory,
+    getUrlQuery: (state) => state.urlQuery
   },
   actions: {
     async fetchData({ commit }) {

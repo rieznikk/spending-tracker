@@ -33,39 +33,41 @@ export default {
   data() {
     return {
       date: "",
-      category: "",
+      category: '',
       price: 0
     };
   },
-  props: {
-    categoryFromQuery: String,
-    spendingFromQuery: Number
-  },
   computed: {
-    ...mapGetters(['getPaymentsList', 'getAvailableCategories', 'getLengthOfPaymentList']),
+    ...mapGetters(['getPaymentsList', 'getAvailableCategories', 'getLengthOfPaymentList', 'getUrlQuery']),
   },
   methods: {
-    ...mapMutations(['setPaymentsListData']),
+    ...mapMutations(['setPaymentsListData', 'setPaymentFormVisibility', 'setUrlQuery']),
     savePayment() {
-      const { date, category, price, categoryFromQuery } = this;
+      const { date, category, price } = this;
       const currentPaymentList = this.getPaymentsList;
       
       const newPaymentData = {
         date: date,
-        category: categoryFromQuery || category,
+        category: category,
         price: price,
         index: this.getLengthOfPaymentList + 1
       };
 
       currentPaymentList.push(newPaymentData);
       this.setPaymentsListData(currentPaymentList);
-      this.$emit("hidePaymentForm");
-      this.$emit('clearProps');
+      this.hideForm();
+      this.clearData();
       this.category = this.getAvailableCategories[0];
       this.price = 0;
     },
     hideForm() {
-      this.$emit("hidePaymentForm");
+      this.$modal.close();
+    },
+    clearData() {
+      this.setUrlQuery({
+        category: null,
+        price: 0
+      });
     },
     getDate() {
       const date = new Date();
@@ -80,13 +82,8 @@ export default {
   },
   mounted() {
     this.date = this.getDate();
-    this.category = this.categoryFromQuery || this.getAvailableCategories[0];
-    this.price = this.spendingFromQuery;
-  },
-  beforeUpdate() {
-    this.date = this.getDate();
-    this.category = this.categoryFromQuery || this.getAvailableCategories[0];
-    this.price = this.spendingFromQuery;
+    this.category = this.getUrlQuery.category !== null ? this.getUrlQuery.category : this.getAvailableCategories[0];
+    this.price = this.getUrlQuery.price || 0;
   }
 };
 </script>

@@ -1,38 +1,23 @@
 <template>
   <div>
-    <button :class="[$style.ctaMain]" @click="paymentFormHandle()">ADD NEW COST +</button>
-
-    <PaymentForm v-show="paymentFormVisibility" @clearProps="clearData" @hidePaymentForm="paymentFormHandle" :categoryFromQuery="category" :spendingFromQuery="spending"/>
+    <button :class="[$style.ctaMain]" @click="showPaymentForm()">ADD NEW COST +</button>
     <PaymentsList />
   </div>
 </template>
 
 <script>
-  import PaymentForm from "../components/PaymentForm";
-  import PaymentsList from "../components/PaymentsList";
-
-  import { mapActions, mapGetters } from "vuex";
+  import PaymentsList from "../components/PaymentsList.vue";
+  import { mapActions, mapGetters, mapMutations } from "vuex";
 
   export default {
     components: {
-      PaymentForm,
       PaymentsList
-    },
-    data() {
-      return {
-        paymentFormVisibility: false,
-        category: '',
-        spending: 0
-      };
     },
     methods: {
       ...mapActions(["fetchData"]),
-      paymentFormHandle() {
-        this.paymentFormVisibility = !this.paymentFormVisibility;
-      },
-      clearData() {
-        this.category = '';
-        this.spending = 0;
+      ...mapMutations(['setUrlQuery']),
+      showPaymentForm() {
+        this.$modal.open('paymentForm');
       }
     },
     computed: {
@@ -58,9 +43,12 @@
       });
 
       if (categoryExists) {
-        this.category = categoryExists;
-        this.spending = cleanedQuerySpending ? cleanedQuerySpending : 0;
-        this.paymentFormHandle();
+        this.setUrlQuery({
+          category: categoryExists,
+          price: cleanedQuerySpending ? cleanedQuerySpending : 0
+        });
+
+        this.showPaymentForm();
       }
     }
   }
