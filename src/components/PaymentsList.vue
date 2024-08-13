@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <table :class="[$style.tableWrapper]" v-show="getPaymentsList.length !== 0">
+  <div v-if="getPaymentsList.length !== 0">
+    <table :class="[$style.tableWrapper]">
       <thead>
         <tr>
           <th :class="[$style.tableCell]">#</th>
@@ -16,17 +16,21 @@
           <td :class="[$style.tableCell]">{{ item.date }}</td>
           <td :class="[$style.tableCell]">{{ item.category }}</td>
           <td :class="[$style.tableCell]">{{ item.price }}</td>
+          <td :class="[$style.tableCell]">
+            <div :class="$style.verticalEllipsis" @click="(event) => switchContextMenu(event, item)"></div>
+          </td>
         </tr>
       </tbody>
     </table>
 
-    <ListPagination :itemsPerPage="itemsOnPage" :currentPage="currentPageNumber" @changePage="rerenderList"></ListPagination>
+    <ListPagination v-if="getPaymentsList.length > itemsOnPage" :itemsPerPage="itemsOnPage" :currentPage="currentPageNumber" @changePage="rerenderList"></ListPagination>
   </div>
+  <div v-else>Let's add your first spending 😎</div>
 </template>
 
 <script>
 import ListPagination from './ListPagination'
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 
 export default {
   components: { 
@@ -44,8 +48,15 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(['setMouseCoordinates']),
     rerenderList(page) {
       this.$router.push({ name: 'dashboard', params: { page } });
+    },
+    switchContextMenu(event, item) {
+      const { clientX, clientY } = event;
+      this.setMouseCoordinates({ clientX, clientY });
+      this.$contextMenu.close();
+      this.$contextMenu.open('contextMenu', item);
     }
   },
   computed: {
@@ -62,18 +73,31 @@ export default {
 </script>
 
 <style lang="scss" module>
-.tableWrapper {
-  width: 50%;
-  border-collapse: collapse;
-  margin-top: 20px;
-}
+  .tableWrapper {
+    width: 50%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
 
-.tableRow {
-  border-top: 1px solid lightgray;
-}
+  .tableRow {
+    border-top: 1px solid lightgray;
+  }
 
-.tableCell {
-  text-align: left;
-  padding: 10px 15px;
-}
+  .tableCell {
+    text-align: left;
+    padding: 10px 15px;
+  }
+
+  .verticalEllipsis {
+    display: inline-block;
+    transform: rotate(90deg);
+    font-size: 24px;
+    line-height: 1;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .verticalEllipsis::before {
+    content: '...';
+  }
 </style>

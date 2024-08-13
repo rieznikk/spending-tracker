@@ -13,7 +13,7 @@
     </main>
 
     <transition name="fade">
-      <ModalWindow v-if="isModalVisible" :modalToShow="modalToShow" />
+      <ModalWindow v-if="isModalVisible" :modalToShow="modalToShow" :additionalInfo="additionalInfo" />
     </transition>
   </div>
 </template>
@@ -27,26 +27,43 @@
     data() {
       return {
         isModalVisible: false,
+        additionalInfo: {},
         modalToShow: ''
       }
     },
     methods: {
-      open({ name }) {
+      openModalWindow({ name, spendingData }) {
         this.modalToShow = name;
+        this.additionalInfo = spendingData ? spendingData : {};
         this.isModalVisible = true;
       },
-      close() {
+      closeModalWindow() {
         this.isModalVisible = false;
+        this.additionalInfo = {};
         this.modalToShow = '';
       }
     },
     beforeMount() {
-      this.$modal.EventBus.$on('open', this.open);
-      this.$modal.EventBus.$on('close', this.close);
+      // ModalWindow
+      this.$modal.EventBus.$on('open', this.openModalWindow);
+      this.$modal.EventBus.$on('close', this.closeModalWindow);
+      // ContextMenu
+      this.$contextMenu.EventBus.$on('open', this.openModalWindow);
+      this.$contextMenu.EventBus.$on('close', this.closeModalWindow);
+      // PaymentFormEdit
+      this.$paymentFormEdit.EventBus.$on('open', this.openModalWindow);
+      this.$paymentFormEdit.EventBus.$on('close', this.closeModalWindow);
     },
     beforeDestroy() {
-      this.$modal.EventBus.$off('open', this.open);
-      this.$modal.EventBus.$off('close', this.close);
+      // ModalWindow
+      this.$modal.EventBus.$off('open', this.openModalWindow);
+      this.$modal.EventBus.$off('close', this.closeModalWindow);
+      // ContextMenu
+      this.$contextMenu.EventBus.$off('open', this.openModalWindow);
+      this.$contextMenu.EventBus.$off('close', this.closeModalWindow);
+      // PaymentFormEdit
+      this.$paymentFormEdit.EventBus.$off('open', this.openModalWindow);
+      this.$paymentFormEdit.EventBus.$off('close', this.closeModalWindow);
     }
   };
 </script>

@@ -15,6 +15,10 @@ export default new Vuex.Store({
     urlQuery: {
       category: null,
       price: null
+    },
+    mouseCoordinates: {
+      x: 0,
+      y: 0
     }
   },
   mutations: {
@@ -23,13 +27,26 @@ export default new Vuex.Store({
     },
     setUrlQuery(state, payload) {
       state.urlQuery = payload;
+    },
+    setMouseCoordinates(state, payload) {
+      state.mouseCoordinates.x = payload.clientX;
+      state.mouseCoordinates.y = payload.clientY;
+    },
+    removePayment(state, payload) {
+      state.paymentsList.splice(payload, 1);
+    },
+    rebuildPaymentList(state) {
+      state.paymentsList.forEach((payment, index) => {
+        payment.index = index + 1;
+      });
     }
   },
   getters: {
     getPaymentsList: (state) => state.paymentsList,
     getLengthOfPaymentList: (state) => state.paymentsList.length,
     getAvailableCategories: (state) => state.availableCategory,
-    getUrlQuery: (state) => state.urlQuery
+    getUrlQuery: (state) => state.urlQuery,
+    getMouseCoordinates: (state) => state.mouseCoordinates
   },
   actions: {
     async fetchData({ commit }) {
