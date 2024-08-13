@@ -32,58 +32,43 @@ import { mapMutations, mapGetters } from 'vuex';
 export default {
   data() {
     return {
-      date: "",
+      date: '',
       category: '',
       price: 0
     };
   },
+  props: {
+    item: Object
+  },
   computed: {
-    ...mapGetters(['getPaymentsList', 'getAvailableCategories', 'getLengthOfPaymentList', 'getUrlQuery']),
+    ...mapGetters(['getAvailableCategories', 'getPaymentsList']),
   },
   methods: {
-    ...mapMutations(['setPaymentsListData', 'setPaymentFormVisibility', 'setUrlQuery']),
+    ...mapMutations(['setPaymentsListData']),
     savePayment() {
-      const { date, category, price } = this;
-      const currentPaymentList = this.getPaymentsList;
-      
-      const newPaymentData = {
-        date: date,
-        category: category,
-        price: price,
-        index: this.getLengthOfPaymentList + 1
-      };
+      const { item, date, category, price } = this;
+      const actualIndex = item.index - 1;
 
-      currentPaymentList.push(newPaymentData);
-      this.setPaymentsListData(currentPaymentList);
+      this.updateSpending(actualIndex, date, category, price);
       this.hideForm();
-      this.clearData();
-      this.category = this.getAvailableCategories[0];
-      this.price = 0;
     },
     hideForm() {
-      this.$modal.close();
+      this.$paymentFormEdit.close();
     },
-    clearData() {
-      this.setUrlQuery({
-        category: null,
-        price: 0
-      });
-    },
-    getDate() {
-      const date = new Date();
-      const padZero = (num) => num.toString().padStart(2, '0');
+    updateSpending(index, date, category, price) {
+      const allSpending = [...this.getPaymentsList];
+      const indexInList = index + 1;
 
-      const day = padZero(date.getDate());
-      const month = padZero(date.getMonth() + 1);
-      const year = date.getFullYear().toString().slice(-2);
-
-      return `${day}.${month}.${year}`;
+      allSpending[index] = { date, category, price, index: indexInList };
+      this.setPaymentsListData(allSpending);
     }
   },
   mounted() {
-    this.date = this.getDate();
-    this.category = this.getUrlQuery.category !== null ? this.getUrlQuery.category : this.getAvailableCategories[0];
-    this.price = this.getUrlQuery.price || 0;
+    if (this.item) {
+      this.date = this.item.date;
+      this.category = this.item.category;
+      this.price = this.item.price;
+    }
   }
 };
 </script>
