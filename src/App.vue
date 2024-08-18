@@ -1,8 +1,8 @@
 <template>
   <v-app>
-    <v-app-bar :class="$style.headerWrapper" app>
-      <header :class="[$style.header]">
-        <nav :class="$style.navigationBar">
+    <v-app-bar class="header-wrapper" max-height="64">
+      <header>
+        <nav class="navigation-bar">
           <router-link to="/">🏠 Home Page</router-link>
           <router-link to="/dashboard/1">📋 Dashboard</router-link>
           <router-link to="/about">💸 About</router-link>
@@ -20,7 +20,7 @@
       <ModalWindow v-if="isModalVisible" :modalToShow="modalToShow" :additionalInfo="additionalInfo" />
     </transition>
 
-    <v-footer :class="$style.footerWrapper" app>
+    <v-footer class="footer-wrapper" app>
       rieznikk @2024
     </v-footer>
   </v-app>
@@ -76,43 +76,6 @@
   };
 </script>
 
-<style lang="scss" module>
-  .navigationBar {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-content: center;
-    justify-content: center;
-    align-items: center;
-    gap: 12px;
-
-    a {
-      text-decoration: none;
-    }
-
-    a:visited {
-      color: black;
-    }
-  }
-
-  .headerWrapper {
-    z-index: initial !important;
-  }
-
-  .footerWrapper {
-    position: initial !important;
-    z-index: initial !important;
-  }
-
-  :global(.fade-enter-active), :global(.fade-leave-active) {
-    transition: opacity 0.5s;
-  }
-
-  :global(.fade-enter), :global(.fade-leave-to) {
-    opacity: 0
-  }
-
-  :global(.fade-enter-to), :global(.fade-leave) {
-    opacity: 100;
-  }
-</style>
+<!-- TODO: -->
+<!-- 1. Pagination component -->
+<!-- 2. Context menu component -->

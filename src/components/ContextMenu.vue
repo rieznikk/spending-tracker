@@ -1,8 +1,13 @@
 <template>
-  <div :class="[$style.wrapper]" :style="{ top: `${getMouseCoordinates.y}px`, left: `${getMouseCoordinates.x + 10}px` }">
-    <div @click="editSpending">📝 Edit spending</div>
-    <div @click="removeSpending">❌ Remove spending</div>
-  </div>
+  <v-card class="context-menu__wrapper" :style="{ top: `${getMouseCoordinates.y}px`, left: `${getMouseCoordinates.x + 10}px` }">
+    <v-list @click="editSpending" class="pt-0 pl-0 pb-0 pr-0">
+      <v-list-item>📝 Edit spending</v-list-item>
+    </v-list>
+
+    <v-list @click="removeSpending" class="pt-0 pl-0 pb-0 pr-0">
+      <v-list-item>❌ Remove spending</v-list-item>
+    </v-list>
+  </v-card>
 </template>
 
 <script>
@@ -34,24 +39,3 @@
     }
   };
 </script>
-
-<style lang="scss" module>
-  .wrapper {
-    background-color: #FFFFFF;
-    border: 1px solid black;
-    position: absolute;
-
-    & div {
-      padding: 3px 6px;
-
-      &:first-child {
-        border-bottom: 1px solid black;
-      }
-
-      &:hover {
-        background-color: lightgray;
-        cursor: pointer;
-      }
-    }
-  }
-</style>

@@ -39,82 +39,52 @@
 </template>
 
 <script>
-import ListPagination from './ListPagination'
-import { mapGetters, mapMutations } from "vuex";
+  import ListPagination from './ListPagination'
+  import { mapGetters, mapMutations } from "vuex";
 
-export default {
-  components: { 
-    ListPagination
-  },
-  data() {
-    return {
-      itemsOnPage: 10,
-      currentPageNumber: 1,
-      headers: [
-        { text: '#', value: 'index', width: '2%' },
-        { text: 'Date', value: 'date', width: '10%' },
-        { text: 'Category', value: 'category', width: '40%' },
-        { text: 'Spending', value: 'price', width: '45%' },
-        { text: '', value: 'action', width: '2%' },
-      ],
-    }
-  },
-  watch: {
-    '$route.params.page'(newPage) {
-      this.currentPageNumber = +newPage;
-    }
-  },
-  methods: {
-    ...mapMutations(['setMouseCoordinates']),
-    rerenderList(page) {
-      this.$router.push({ name: 'dashboard', params: { page } });
+  export default {
+    components: { 
+      ListPagination
     },
-    switchContextMenu(event, item) {
-      const { clientX, clientY } = event;
-      this.setMouseCoordinates({ clientX, clientY });
-      this.$contextMenu.close();
-      this.$contextMenu.open('contextMenu', item);
+    data() {
+      return {
+        itemsOnPage: 10,
+        currentPageNumber: 1,
+        headers: [
+          { text: '#', value: 'index', width: '2%' },
+          { text: 'Date', value: 'date', width: '10%' },
+          { text: 'Category', value: 'category', width: '40%' },
+          { text: 'Spending', value: 'price', width: '45%' },
+          { text: '', value: 'action', width: '2%' },
+        ],
+      }
+    },
+    watch: {
+      '$route.params.page'(newPage) {
+        this.currentPageNumber = +newPage;
+      }
+    },
+    methods: {
+      ...mapMutations(['setMouseCoordinates']),
+      rerenderList(page) {
+        this.$router.push({ name: 'dashboard', params: { page } });
+      },
+      switchContextMenu(event, item) {
+        const { clientX, clientY } = event;
+        this.setMouseCoordinates({ clientX, clientY });
+        this.$contextMenu.close();
+        this.$contextMenu.open('contextMenu', item);
+      }
+    },
+    computed: {
+      ...mapGetters(["getPaymentsList"]),
+      currentPage() {
+        const { itemsOnPage, currentPageNumber } = this;
+        return this.getPaymentsList.slice(itemsOnPage * (currentPageNumber - 1), itemsOnPage * (currentPageNumber - 1) + itemsOnPage);
+      }
+    },
+    mounted() {
+      this.currentPageNumber = +this.$route.params.page || 1;
     }
-  },
-  computed: {
-    ...mapGetters(["getPaymentsList"]),
-    currentPage() {
-      const { itemsOnPage, currentPageNumber } = this;
-      return this.getPaymentsList.slice(itemsOnPage * (currentPageNumber - 1), itemsOnPage * (currentPageNumber - 1) + itemsOnPage);
-    }
-  },
-  mounted() {
-    this.currentPageNumber = +this.$route.params.page || 1;
-  }
-};
+  };
 </script>
-
-<style lang="scss" module>
-  .tableWrapper {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-  }
-
-  .tableRow {
-    border-top: 1px solid lightgray;
-  }
-
-  .tableCell {
-    text-align: left;
-    padding: 10px 15px;
-  }
-
-  .verticalEllipsis {
-    display: inline-block;
-    transform: rotate(90deg);
-    font-size: 24px;
-    line-height: 1;
-    position: relative;
-    cursor: pointer;
-  }
-
-  .verticalEllipsis::before {
-    content: '...';
-  }
-</style>
