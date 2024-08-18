@@ -1,6 +1,8 @@
 <template>
   <v-row>
-    <v-col cols="12" lg="6" :order-lg="2" :order="1">DIAGRAM</v-col>
+    <v-col cols="12" lg="6" :order-lg="2" :order="1">
+      <PieChart />
+    </v-col>
     
     <v-col cols="12" lg="6" :order-lg="1" :order="2">
       <v-btn dark color="teal" @click="showPaymentForm()">
@@ -13,12 +15,14 @@
 </template>
 
 <script>
-  import PaymentsList from "../components/PaymentsList.vue";
-  import { mapActions, mapGetters, mapMutations } from "vuex";
+  import PaymentsList from '../components/PaymentsList.vue';
+  import PieChart from '../components/charts/PieChart.vue';
+  import { mapActions, mapGetters, mapMutations } from 'vuex';
 
   export default {
     components: {
-      PaymentsList
+      PaymentsList,
+      PieChart
     },
     methods: {
       ...mapActions(["fetchData"]),
