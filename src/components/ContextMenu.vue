@@ -1,5 +1,12 @@
 <template>
-  <v-card class="context-menu__wrapper" :style="{ top: `${getMouseCoordinates.y}px`, left: `${getMouseCoordinates.x + 10}px` }">
+  <v-card
+    class="context-menu__wrapper"
+    :style="{
+      top: `${getCorrectedY}px`,
+      left: shouldSwitchToRight ? 'auto' : `${getMouseCoordinates.x + 10}px`,
+      right: shouldSwitchToRight ? '10px' : 'auto'
+    }"
+  >
     <v-list @click="editSpending" class="pt-0 pl-0 pb-0 pr-0">
       <v-list-item>📝 Edit spending</v-list-item>
     </v-list>
@@ -15,7 +22,14 @@
 
   export default {
     computed: {
-      ...mapGetters(['getMouseCoordinates'])
+      ...mapGetters(['getMouseCoordinates']),
+      shouldSwitchToRight() {
+        const menuWidth = 200;
+        return this.getMouseCoordinates.x + menuWidth + 20 > window.innerWidth;
+      },
+      getCorrectedY() {
+        return this.getMouseCoordinates.y + window.scrollY;
+      }
     },
     methods: {
       editSpending() {
@@ -33,9 +47,11 @@
     },
     mounted() {
       document.addEventListener('click', this.handleOutsideClick);
+      window.addEventListener('resize', this.handleResize);
     },
     beforeDestroy() {
       document.removeEventListener('click', this.handleOutsideClick);
+      window.removeEventListener('resize', this.handleResize);
     }
   };
 </script>

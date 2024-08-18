@@ -75,6 +75,3 @@
     }
   };
 </script>
-
-<!-- TODO: -->
-<!-- 1. Media query -->

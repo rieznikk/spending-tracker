@@ -1,6 +1,6 @@
 <template>
   <div v-if="getPaymentsList.length !== 0">
-    <v-container fluid class="pl-0">
+    <v-container fluid class="px-0">
       <v-data-table
         :headers="headers"
         :items="currentPage"

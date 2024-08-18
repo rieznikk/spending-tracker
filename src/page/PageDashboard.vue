@@ -1,14 +1,14 @@
 <template>
   <v-row>
-    <v-col>
+    <v-col cols="12" lg="6" :order-lg="2" :order="1">DIAGRAM</v-col>
+    
+    <v-col cols="12" lg="6" :order-lg="1" :order="2">
       <v-btn dark color="teal" @click="showPaymentForm()">
         ADD NEW COST
         <v-icon dark>mdi-plus</v-icon>
       </v-btn>
       <PaymentsList />
     </v-col>
-    
-    <v-col>DIAGRAM</v-col>
   </v-row>
 </template>
 

@@ -1,13 +1,3 @@
 <template>
-  <header>Welcome to Spending Tracker!</header>
-
-  
+  <div>Welcome to Spending Tracker!</div>
 </template>
-
-<script>
-
-</script>
-
-<style module lang="scss">
-
-</style>
