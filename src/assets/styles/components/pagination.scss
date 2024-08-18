@@ -1,0 +1,13 @@
+.pagination-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+
+  & .pagination-item {
+    cursor: pointer;
+  }
+
+  & .current {
+    background-color: #eee;
+  }
+}
