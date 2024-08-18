@@ -77,5 +77,4 @@
 </script>
 
 <!-- TODO: -->
-<!-- 1. Pagination component -->
-<!-- 2. Context menu component -->
+<!-- 1. Media query -->

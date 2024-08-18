@@ -1,6 +1,6 @@
 <template>
-  <div :class="[$style.paginationWrapper]">
-    <div v-for="i in amount" :key="i" :class="[$style.paginationItem, {[$style.current]: currentPage === i}]" @click="changePage(i)">{{ i }}</div>
+  <div class="pagination-wrapper">
+    <div v-for="i in amount" :key="i" :class="['pagination-item', 'pl-1', 'pr-1', {['current']: currentPage === i}]" @click="changePage(i)">{{ i }}</div>
   </div>
 </template>
 
@@ -25,23 +25,6 @@
       changePage(page) {
         this.$emit('changePage', page);
       }
-    },
-    mounted() {}
+    }
   }
 </script>
-
-<style lang="scss" module>
-  .paginationWrapper {
-    display: flex;
-    gap: 5px;
-
-    .paginationItem {
-      cursor: pointer;
-    }
-
-    .current {
-      background-color: black;
-      color: white;
-    }
-  }
-</style>
