@@ -1,27 +1,37 @@
 <template>
   <div v-if="getPaymentsList.length !== 0">
-    <table :class="[$style.tableWrapper]">
-      <thead>
-        <tr>
-          <th :class="[$style.tableCell]">#</th>
-          <th :class="[$style.tableCell]">Date</th>
-          <th :class="[$style.tableCell]">Category</th>
-          <th :class="[$style.tableCell]">Value</th>
-        </tr>
-      </thead>
+    <v-container fluid class="pl-0">
+      <v-data-table
+        :headers="headers"
+        :items="currentPage"
+        class="elevation-1"
+        disable-pagination
+        hide-default-footer
+      >
 
-      <tbody>
-        <tr v-for="(item, index) in currentPage" :key="index" :class="[$style.tableRow]">
-          <td :class="[$style.tableCell]">{{ item.index }}</td>
-          <td :class="[$style.tableCell]">{{ item.date }}</td>
-          <td :class="[$style.tableCell]">{{ item.category }}</td>
-          <td :class="[$style.tableCell]">{{ item.price }}</td>
-          <td :class="[$style.tableCell]">
-            <div :class="$style.verticalEllipsis" @click="(event) => switchContextMenu(event, item)"></div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+        <template v-slot:[`item.index`]="{ item }">
+          <v-chip>{{ item.index }}</v-chip>
+        </template>
+
+        <template v-slot:[`item.date`]="{ item }">
+          {{ item.date }}
+        </template>
+
+        <template v-slot:[`item.category`]="{ item }">
+          {{ item.category }}
+        </template>
+
+        <template v-slot:[`item.price`]="{ item }">
+          {{ item.price }}
+        </template>
+
+        <template v-slot:[`item.action`]="{ item }">
+          <v-btn icon small @click="(event) => switchContextMenu(event, item)">
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>
+        </template>
+      </v-data-table>
+    </v-container>
 
     <ListPagination v-if="getPaymentsList.length > itemsOnPage" :itemsPerPage="itemsOnPage" :currentPage="currentPageNumber" @changePage="rerenderList"></ListPagination>
   </div>
@@ -39,7 +49,14 @@ export default {
   data() {
     return {
       itemsOnPage: 10,
-      currentPageNumber: 1
+      currentPageNumber: 1,
+      headers: [
+        { text: '#', value: 'index', width: '2%' },
+        { text: 'Date', value: 'date', width: '10%' },
+        { text: 'Category', value: 'category', width: '40%' },
+        { text: 'Spending', value: 'price', width: '45%' },
+        { text: '', value: 'action', width: '2%' },
+      ],
     }
   },
   watch: {
@@ -74,7 +91,7 @@ export default {
 
 <style lang="scss" module>
   .tableWrapper {
-    width: 50%;
+    width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
   }

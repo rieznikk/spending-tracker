@@ -1,8 +1,15 @@
 <template>
-  <div>
-    <button :class="[$style.ctaMain]" @click="showPaymentForm()">ADD NEW COST +</button>
-    <PaymentsList />
-  </div>
+  <v-row>
+    <v-col>
+      <v-btn dark color="teal" @click="showPaymentForm()">
+        ADD NEW COST
+        <v-icon dark>mdi-plus</v-icon>
+      </v-btn>
+      <PaymentsList />
+    </v-col>
+    
+    <v-col>DIAGRAM</v-col>
+  </v-row>
 </template>
 
 <script>
@@ -56,19 +63,3 @@
     }
   }
 </script>
-
-<style module lang="scss">
-  .ctaMain {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 0.85rem;
-    padding: 5px 15px;
-    background-color: coral;
-    border: none;
-    border-radius: 5px;
-    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
-      rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
-    cursor: pointer;
-  }
-</style>

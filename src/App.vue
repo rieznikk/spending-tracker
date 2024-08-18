@@ -1,21 +1,29 @@
 <template>
-  <div id="app">
-    <header :class="[$style.header]">
-      <nav :class="$style.navigationBar">
-        <router-link to="/">🏠 Home Page</router-link>
-        <router-link to="/dashboard/1">📋 Dashboard</router-link>
-        <router-link to="/about">💸 About</router-link>
-      </nav>
-    </header>
+  <v-app>
+    <v-app-bar :class="$style.headerWrapper" app>
+      <header :class="[$style.header]">
+        <nav :class="$style.navigationBar">
+          <router-link to="/">🏠 Home Page</router-link>
+          <router-link to="/dashboard/1">📋 Dashboard</router-link>
+          <router-link to="/about">💸 About</router-link>
+        </nav>
+      </header>
+    </v-app-bar>
 
-    <main>
-      <router-view></router-view>
-    </main>
+    <v-main>
+      <v-container fluid>
+        <router-view></router-view>
+      </v-container>
+    </v-main>
 
     <transition name="fade">
       <ModalWindow v-if="isModalVisible" :modalToShow="modalToShow" :additionalInfo="additionalInfo" />
     </transition>
-  </div>
+
+    <v-footer :class="$style.footerWrapper" app>
+      rieznikk @2024
+    </v-footer>
+  </v-app>
 </template>
 
 <script>
@@ -69,14 +77,6 @@
 </script>
 
 <style lang="scss" module>
-  .header {
-    width: 50%;
-    text-align: center;
-    font-weight: bold;
-    font-size: 1.5rem;
-    margin-bottom: 5px;
-  }
-
   .navigationBar {
     display: flex;
     flex-direction: row;
@@ -93,6 +93,15 @@
     a:visited {
       color: black;
     }
+  }
+
+  .headerWrapper {
+    z-index: initial !important;
+  }
+
+  .footerWrapper {
+    position: initial !important;
+    z-index: initial !important;
   }
 
   :global(.fade-enter-active), :global(.fade-leave-active) {
