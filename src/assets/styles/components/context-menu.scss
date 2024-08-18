@@ -1,0 +1,14 @@
+.context-menu__wrapper {
+  background-color: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, .87);
+  position: absolute;
+  border: none;
+
+  & div {
+    cursor: pointer;
+
+    &:hover {
+      background-color:#eee;
+    }
+  }
+}

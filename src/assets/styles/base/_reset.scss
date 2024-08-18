@@ -1,0 +1,17 @@
+.header-wrapper {
+  z-index: initial !important;
+}
+
+.footer-wrapper {
+  position: initial !important;
+  z-index: initial !important;
+}
+
+a {
+  text-decoration: none;
+  color: black !important;
+
+  &:visited {
+    color: black !important;
+  }
+}

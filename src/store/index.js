@@ -46,7 +46,22 @@ export default new Vuex.Store({
     getLengthOfPaymentList: (state) => state.paymentsList.length,
     getAvailableCategories: (state) => state.availableCategory,
     getUrlQuery: (state) => state.urlQuery,
-    getMouseCoordinates: (state) => state.mouseCoordinates
+    getMouseCoordinates: (state) => state.mouseCoordinates,
+    getCategoriesFromPaymentsList: (state) => {
+      const categories = {};
+    
+      state.paymentsList.forEach(spending => {
+        if (!categories[spending.category]) {
+          categories[spending.category] = 0;
+        }
+        categories[spending.category] += spending.price;
+      });
+    
+      return {
+        labels: Object.keys(categories),
+        data: Object.values(categories)
+      };
+    }
   },
   actions: {
     async fetchData({ commit }) {

@@ -1,156 +1,92 @@
 <template>
-  <div :class="[$style.overlay]">
-    <div :class="[$style.modal]">
-      <span :class="[$style.close]" @click="hideForm()">&times;</span>
+  <div class="overlay">
+    <div class="modal">
+      <span class="close" @click="hideForm()">
+        <v-icon color="black">mdi-close</v-icon>
+      </span>
 
-      <div :class="[$style.dateField]">
-        <span :class="[$style.dateHeading]">Date</span>
-        <input :class="[$style.input]" placeholder="Date" type="text" v-model="date"/>
+      <v-text-field class="mb-2" label="Date" v-model="date" hide-details="true" />
+
+      <div class="mb-2">
+        <div class="mb-2">Category</div>
+        <v-select 
+          v-model="category"
+          :items="getAvailableCategories"
+          hide-details="true"
+          label="Category"
+          dense
+          solo
+        />
       </div>
 
-      <div :class="[$style.categoryField]">
-        <span :class="[$style.categoryHeading]">Category</span>
-
-        <select v-model="category" :class="[$style.input]">
-          <option v-for="(option, index) in getAvailableCategories" :value="option" :key="index">{{ option }}</option>
-        </select>
-      </div>
-
-      <div :class="[$style.priceField]">
-        <span :class="[$style.priceHeading]">Your spending</span>
-        <input :class="[$style.input]" placeholder="Price" type="number" v-model.number="price"/>
-      </div>
-
-      <button :class="[$style.buttonSave]" @click="savePayment()">Save payment</button>
+      <v-text-field label="Spending" v-model.number="price" :rules="spendingRules" />
+      <v-btn dark color="teal" @click="savePayment()">Save spending</v-btn>
     </div>
   </div>
 </template>
 
 <script>
-import { mapMutations, mapGetters } from 'vuex';
+  import { mapMutations, mapGetters } from 'vuex';
 
-export default {
-  data() {
-    return {
-      date: "",
-      category: '',
-      price: 0
-    };
-  },
-  computed: {
-    ...mapGetters(['getPaymentsList', 'getAvailableCategories', 'getLengthOfPaymentList', 'getUrlQuery']),
-  },
-  methods: {
-    ...mapMutations(['setPaymentsListData', 'setPaymentFormVisibility', 'setUrlQuery']),
-    savePayment() {
-      const { date, category, price } = this;
-      const currentPaymentList = this.getPaymentsList;
-      
-      const newPaymentData = {
-        date: date,
-        category: category,
-        price: price,
-        index: this.getLengthOfPaymentList + 1
+  export default {
+    data() {
+      return {
+        date: "",
+        category: '',
+        price: 0,
+        spendingRules: [
+          value => !!value || 'Please enter amout of spending.',
+          value => (!isNaN(parseFloat(value)) && isFinite(value)) || 'Please enter only digits'
+        ]
       };
-
-      currentPaymentList.push(newPaymentData);
-      this.setPaymentsListData(currentPaymentList);
-      this.hideForm();
-      this.clearData();
-      this.category = this.getAvailableCategories[0];
-      this.price = 0;
     },
-    hideForm() {
-      this.$modal.close();
+    computed: {
+      ...mapGetters(['getPaymentsList', 'getAvailableCategories', 'getLengthOfPaymentList', 'getUrlQuery']),
     },
-    clearData() {
-      this.setUrlQuery({
-        category: null,
-        price: 0
-      });
+    methods: {
+      ...mapMutations(['setPaymentsListData', 'setPaymentFormVisibility', 'setUrlQuery']),
+      savePayment() {
+        const { date, category, price } = this;
+        const currentPaymentList = this.getPaymentsList;
+        
+        const newPaymentData = {
+          date: date,
+          category: category,
+          price: price,
+          index: this.getLengthOfPaymentList + 1
+        };
+
+        currentPaymentList.push(newPaymentData);
+        this.setPaymentsListData(currentPaymentList);
+        this.hideForm();
+        this.clearData();
+        this.category = this.getAvailableCategories[0];
+        this.price = 0;
+      },
+      hideForm() {
+        this.$modal.close();
+      },
+      clearData() {
+        this.setUrlQuery({
+          category: null,
+          price: 0
+        });
+      },
+      getDate() {
+        const date = new Date();
+        const padZero = (num) => num.toString().padStart(2, '0');
+
+        const day = padZero(date.getDate());
+        const month = padZero(date.getMonth() + 1);
+        const year = date.getFullYear().toString().slice(-2);
+
+        return `${day}.${month}.${year}`;
+      }
     },
-    getDate() {
-      const date = new Date();
-      const padZero = (num) => num.toString().padStart(2, '0');
-
-      const day = padZero(date.getDate());
-      const month = padZero(date.getMonth() + 1);
-      const year = date.getFullYear().toString().slice(-2);
-
-      return `${day}.${month}.${year}`;
+    mounted() {
+      this.date = this.getDate();
+      this.category = this.getUrlQuery.category !== null ? this.getUrlQuery.category : this.getAvailableCategories[0];
+      this.price = this.getUrlQuery.price || 0;
     }
-  },
-  mounted() {
-    this.date = this.getDate();
-    this.category = this.getUrlQuery.category !== null ? this.getUrlQuery.category : this.getAvailableCategories[0];
-    this.price = this.getUrlQuery.price || 0;
-  }
-};
+  };
 </script>
-
-<style lang="scss" module>
-.overlay {
-  display: flex;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
-  justify-content: center;
-  align-items: center;
-}
-
-.modal {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 5px;
-  text-align: center;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  justify-content: center;
-  row-gap: 10px;
-}
-
-.close {
-  position: absolute;
-  top: 1.5px;
-  right: 7px;
-  cursor: pointer;
-}
-
-.dateField,
-.categoryField,
-.priceField {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  flex-wrap: nowrap;
-  align-items: center;
-  column-gap: 15px;
-}
-
-.input {
-  width: 200px;
-  max-width: 200px;
-  min-width: 200px;
-  box-sizing: border-box;
-  padding-block: 1px;
-}
-
-.buttonSave {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 0.85rem;
-  padding: 5px 15px;
-  background-color: coral;
-  border: none;
-  border-radius: 5px;
-  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
-    rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
-  cursor: pointer;
-}
-</style>
